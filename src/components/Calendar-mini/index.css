@@ -1,0 +1,45 @@
+.calendar-wrapper {
+    width: 420px;
+    height: 390px;
+
+    border: 1px solid #ccc;
+}
+
+.header {
+    display: flex;
+    padding: 8px;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+.days-header,
+.days-body {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.day-item {
+    width: calc(100% / 7);
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+    cursor: pointer;
+}
+
+.day-item:hover {
+    background: #ccc;
+}
+
+.last-month {
+    color: #c1c1c1;
+}
+
+.next-month {
+    color: #c1c1c1;
+}
+
+.current-day {
+    background: #c1c1c1;
+}
