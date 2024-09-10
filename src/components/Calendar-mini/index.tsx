@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './index.css'
 import clsx from 'clsx'
 
 interface CalendarProps {
+    value?: Date | undefined
     defaultValue?: Date,
     onChange?: (date: Date) => void
 }
@@ -19,15 +20,34 @@ const daysOfAWeek = [
 
 const Calendar: React.FC<CalendarProps> = ({
     defaultValue = new Date(),
+    value: propValue,
     onChange
 }) => {
-    const [value, setValue] = useState(defaultValue)
-
-    const [dateOnView, setDateOnView] = useState({
-        monthIndex: value.getMonth(),
-        year: value.getFullYear()
+    const isFirstRender = useRef(true)
+    const [stateValue, setStateValue] = useState<Date | undefined>(() => {
+        if (propValue === undefined) {
+            return defaultValue
+        } else {
+            return propValue
+        }
     })
 
+    const [dateOnView, setDateOnView] = useState(() => {
+        if (stateValue === undefined) {
+            const date = new Date()
+            return {
+                monthIndex: date.getMonth(),
+                year: date.getFullYear()
+            }
+        } else {
+            return {
+                monthIndex: stateValue.getMonth(),
+                year: stateValue.getFullYear()
+            }
+        }
+    })
+
+    const value = propValue ? propValue : stateValue
 
     const lastMonthHandler = () => setDateOnView(({ year, monthIndex }) => {
         const dateOfLastMonth = new Date(year, monthIndex - 1)
@@ -45,7 +65,9 @@ const Calendar: React.FC<CalendarProps> = ({
     })
 
     const onClickDate = (date: Date) => {
-        setValue(date)
+        if (propValue === undefined) {
+            setStateValue(date)
+        }
         onChange?.(date)
     }
 
@@ -56,6 +78,13 @@ const Calendar: React.FC<CalendarProps> = ({
         })
         onClickDate(date)
     }
+
+    useEffect(() => {
+        isFirstRender.current = false
+        if (propValue === undefined && !isFirstRender.current) {
+            setStateValue(propValue)
+        }
+    }, [propValue])
 
     const renderDays = () => {
         const elements = []
@@ -84,7 +113,7 @@ const Calendar: React.FC<CalendarProps> = ({
             elements.push(
                 <div
                     onClick={() => onClickDate(date)}
-                    className={clsx("day-item", { "current-day": date.toLocaleDateString() === value.toLocaleDateString() })}
+                    className={clsx("day-item", { "current-day": date.toLocaleDateString() === value?.toLocaleDateString() })}
                     title={date.toLocaleDateString()}
                     key={date.toLocaleDateString()}
                 >
