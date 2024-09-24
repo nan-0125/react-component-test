@@ -1,4 +1,4 @@
-import { useState, type CSSProperties, type ReactNode } from 'react'
+import { useEffect, useState, type CSSProperties, type ReactNode } from 'react'
 import './index.scss'
 import MonthCalendar from './MonthCalendar'
 import dayjs, { Dayjs } from 'dayjs'
@@ -30,6 +30,10 @@ const Calendar: React.FC<CalendarProps> = (props) => {
         defaultValue: dayjs()
     })
     const [curMonth, setCurMonth] = useState<Dayjs>(curValue)
+
+    useEffect(() => {
+        setCurMonth(curValue)
+    }, [curValue])
 
     const selectHandler = (date: Dayjs) => {
         setCurValue(date)

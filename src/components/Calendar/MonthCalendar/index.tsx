@@ -20,7 +20,7 @@ const getAllDays = (date: Dayjs) => {
 
     // const daysCount = date.daysInMonth()
     const startDate = date.startOf('month')
-    const startDay = startDate.day() === 0 ? 6 : startDate.day()
+    const startDay = startDate.day() === 0 ? 6 : startDate.day() - 1
 
     const daysInfo: DayInfo[] = new Array(6 * 7)
 
