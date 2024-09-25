@@ -1,12 +1,24 @@
-import dayjs from "dayjs"
-import Calendar from "./components/Calendar"
-import { useState } from "react"
+import Space from "./components/Space"
+import './App.css'
+import { ConfigProvider } from "./components/Space/ConfigProvider"
 
 function App() {
-  const [date, setDate] = useState(dayjs('2023-10-31'))
   return (
     <>
-      <Calendar value={date} locale="zh-CN" onChange={setDate}  />
+      <ConfigProvider space={{size: [20,10]}}>
+        <Space className="container" direction="horizontal"  wrap={true} align="center" >
+          <div className="box"></div>
+          <div className="box"></div>
+          <div className="box"></div>
+          <div className="box"></div>
+          <div className="box"></div>
+          <div className="box"></div>
+          <div className="box"></div>
+          <div className="box"></div>
+          <div className="box"></div>
+        </Space>
+      </ConfigProvider>
+
     </>
   )
 }
