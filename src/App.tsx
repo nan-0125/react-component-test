@@ -1,25 +1,30 @@
-import Space from "./components/Space"
-import './App.css'
-import { ConfigProvider } from "./components/Space/ConfigProvider"
+import { useEffect, useRef, useState } from "react"
+import MutateObserver from "./components/MutationObserver";
 
 function App() {
-  return (
-    <>
-      <ConfigProvider space={{size: [20,10]}}>
-        <Space className="container" direction="horizontal"  wrap={true} align="center" >
-          <div className="box"></div>
-          <div className="box"></div>
-          <div className="box"></div>
-          <div className="box"></div>
-          <div className="box"></div>
-          <div className="box"></div>
-          <div className="box"></div>
-          <div className="box"></div>
-          <div className="box"></div>
-        </Space>
-      </ConfigProvider>
+  const [className, setClassName] = useState('aaa')
+  useEffect(() => {
+    setTimeout(() => setClassName('bbb'), 2000);
+  }, [])
 
-    </>
+  const onMutation: MutationCallback = (mutations) => {
+    console.log(mutations)
+  }
+
+
+
+  return (
+    <MutateObserver onMutate={onMutation}>
+      <div id="container">
+        <div className={className}>
+          {
+            className === 'aaa' ? <div>aaa</div> : <div>
+              <p>bbb</p>
+            </div>
+          }
+        </div>
+      </div>
+    </MutateObserver>
   )
 }
 
